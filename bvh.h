@@ -33,7 +33,7 @@ inline bool box_compare(const std::shared_ptr<hittable> a, const std::shared_ptr
     aabb box_a;
     aabb box_b;
 
-    if(!a->bounding_box(0, 0, box_a) || b->bounding_box(0, 0, box_b))
+    if(!a->bounding_box(0, 0, box_a) || !b->bounding_box(0, 0, box_b))
         std::cerr << "No bounding box in bvh_node constructor.\n";
     
     return box_a.min().e[axis] < box_b.min().e[axis];
@@ -99,7 +99,7 @@ bvh_node::bvh_node(const std::vector<std::shared_ptr<hittable>>& src_objects, si
     }
     else
     {
-        std::sort(objects.begin() + start, objects.end() + end, comparator);
+        std::sort(objects.begin() + start, objects.begin() + end, comparator);
         
         auto mid = start + object_span / 2;
         left = std::make_shared<bvh_node>(objects, start, mid, time0, time1);
